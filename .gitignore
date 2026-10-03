@@ -1,0 +1,6 @@
+# Installed by npm install. Never commit these.
+node_modules/
+
+# Local settings for your own machine. Not committed, so a fresh clone
+# has to run without it.
+app/config.json

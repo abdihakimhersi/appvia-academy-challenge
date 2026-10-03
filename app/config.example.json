@@ -1,0 +1,5 @@
+{
+  "port": 3000,
+  "maxTextLength": 200,
+  "adminToken": "tb-admin-4c7e19a2"
+}

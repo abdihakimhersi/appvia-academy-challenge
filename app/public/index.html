@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Taskboard - Appvia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="background" aria-hidden="true"></canvas>
+  <main class="container">
+    <header class="masthead">
+      <img class="logo" src="appvia-logo.svg" alt="Appvia" />
+      <div class="masthead-text">
+        <h1>Taskboard</h1>
+        <p class="subtitle">Internal task tracker</p>
+      </div>
+    </header>
+
+    <form id="todo-form" autocomplete="off">
+      <input id="todo-input" name="text" type="text" placeholder="What needs doing?" />
+      <button type="submit">Add</button>
+    </form>
+    <p id="hint" class="hint"></p>
+
+    <p id="status" class="status" role="status"></p>
+
+    <ul id="todo-list" class="todo-list"></ul>
+  </main>
+  <script src="background.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

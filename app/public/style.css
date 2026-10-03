@@ -1,0 +1,238 @@
+/* Appvia brand tokens. Raw colour values live here and nowhere else;
+   everything below reads the tokens. */
+:root {
+  --appvia-dark-blue: #022859;
+  --appvia-mid-blue: #1578e4;
+  --appvia-light-blue: #66adf8;
+  --appvia-blush: #c4bbff;
+  --appvia-pink: #cd63c3;
+  --appvia-link-blue: #0f62c4;
+
+  --grey-900: #1a1a2e;
+  --grey-800: #2d2d44;
+  --grey-700: #3d3d56;
+  --grey-500: #71718a;
+  --grey-300: #b8b8cc;
+  --grey-200: #d6d6e5;
+  --grey-100: #ebebf2;
+  --grey-50: #f5f5fa;
+
+  --error: #e02424;
+  --error-ink: #8c1414;
+
+  --font-display: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Light theme */
+  --bg: var(--grey-50);
+  --surface: #ffffff;
+  --text: var(--grey-900);
+  --text-muted: var(--grey-700);
+  --border: var(--grey-200);
+  --accent: var(--appvia-mid-blue);
+  --accent-hover: var(--appvia-link-blue);
+  --danger: var(--error);
+  --danger-ink: var(--error-ink);
+  --focus-ring: var(--appvia-mid-blue);
+  --masthead-subtitle: var(--grey-300);
+}
+
+/* Dark theme: every colour keeps a partner so nothing disappears. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: var(--grey-900);
+    --surface: var(--grey-800);
+    --text: var(--grey-100);
+    --text-muted: var(--grey-300);
+    --border: var(--grey-700);
+    --accent: var(--appvia-mid-blue);
+    --accent-hover: var(--appvia-light-blue);
+    --danger: var(--error);
+    --danger-ink: #f28b8b;
+    --focus-ring: var(--appvia-light-blue);
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+#background {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 560px;
+}
+
+.masthead {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--appvia-dark-blue);
+  border-radius: 10px;
+  padding: 1.1rem 1.25rem 1.25rem;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+/* Brand accent gradient, kept to a rule along the masthead edge. */
+.masthead::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--appvia-mid-blue),
+    var(--appvia-light-blue),
+    var(--appvia-blush)
+  );
+}
+
+.masthead .logo {
+  height: 26px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.masthead-text {
+  border-left: 1px solid var(--grey-700);
+  padding-left: 1rem;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.subtitle {
+  color: var(--masthead-subtitle);
+  font-size: 0.85rem;
+}
+
+#todo-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+#todo-input {
+  flex: 1;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  background: var(--surface);
+  color: var(--text);
+}
+
+#todo-input::placeholder {
+  color: var(--text-muted);
+}
+
+button {
+  padding: 0.5rem 0.9rem;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--accent-hover);
+}
+
+:is(button, #todo-input):focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.status {
+  min-height: 1.25rem;
+  font-size: 0.85rem;
+  color: var(--danger-ink);
+  margin-bottom: 0.5rem;
+}
+
+.todo-list {
+  list-style: none;
+}
+
+.todo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.todo .text {
+  flex: 1;
+}
+
+.todo .age {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.todo.completed .text {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.todo .actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.todo .actions .delete {
+  background: var(--danger);
+}
+
+.todo .actions .delete:hover {
+  background: var(--danger-ink);
+}
