@@ -1,4 +1,4 @@
-# Write-up: [your name]
+# Write-up: [Abdi-Hakim Hersi]
 
 > Fill in each section below. Bullet points are fine. Clarity beats length.
 > If we take your application forward, you'll talk someone from our team
@@ -10,11 +10,20 @@
 The first error you hit, copied exactly as it appeared:
 
 ```
-(paste it here)
+(npm error code EJSONPARSE
+npm error JSON.parse Invalid package.json: JSONParseError: Expected double-quoted property name in JSON at position 297 (line 14 column 3) while parsing near "...rgan\": \"^1.10.0\",\n  }\n}\n"
+npm error JSON.parse Failed to parse JSON data.
+npm error JSON.parse Note: package.json must be actual JSON, not just JavaScript.
+npm error A complete log of this run can be found in: C:\Users\SuperUser\AppData\Local\npm-cache\_logs\2026-10-04T12_39_39_219Z-debug-0.log
+)
 ```
 
 What you did about it:
-
+- npm install had failed because EJSONPARSE
+- the error pointed to Line 14 column 3 in package.json
+- found that in the last line inside dependencies, there was a comma at the	even though there was no other item after the comma
+- deleted the trailing comma and saved the file
+- ran npm install and it worked but also reported "1 high severity 	vulnerability"
 ## 2. What was broken
 
 For each fault you found: where it was, what the symptom was, how you found
@@ -23,7 +32,7 @@ changed.
 
 | # | Where (file) | Symptom | How I found it | Root cause | My fix |
 |---|--------------|---------|----------------|------------|--------|
-| 1 |              |         |                |            |        |
+| 1 |  app         |EJSONPARS| npm install    |  comma     | delete |
 | 2 |              |         |                |            |        |
 
 ## 3. What I didn't fix
