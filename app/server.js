@@ -12,8 +12,6 @@ const ADMIN_TOKEN = process.env.ADMIN_TOKEN || config.adminToken;
 // Settings the web UI reads when the page loads.
 const settings = {
   maxTextLength: config.maxTextLength || 200,
-  adminToken: ADMIN_TOKEN,
-  version: require('./package.json').version
 };
 
 const app = express();
@@ -76,7 +74,7 @@ app.delete('/api/todos/:id', (req, res) => {
 
 // The operations team uses this to clear the board between demos.
 app.post('/api/admin/reset', (req, res) => {
-  if (req.get('x-admin-token') !== ADMIN_TOKEN) {
+  if (!ADMIN_TOKEN || req.get('x-admin-token') !== ADMIN_TOKEN) {
     return res.status(403).json({ error: 'Forbidden' });
   }
   todos = [];

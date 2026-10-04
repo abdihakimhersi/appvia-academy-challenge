@@ -35,7 +35,8 @@ changed.
 | 1 | `app/package.json` | `npm install` failed with `EJSONPARSE` | Ran `npm install`; the error pointed to line 14, column 3 of `package.json` | Trailing comma after the last dependency (`morgan`). JSON doesn't allow trailing commas, so npm couldn't read the file | Removed the trailing comma; `npm install` then worked |
 | 2 | `app/package.json` | `npm install` warned of 1 high severity vulnerability | Ran `npm audit` and `npm ls moment` | `moment` pinned to exactly `2.29.1`, which has known path traversal and ReDoS vulnerabilities (fixed in 2.29.2 / 2.29.4) | Changed to `^2.30.1` to raise the minimum safe version; npm installed 2.31.0 and `npm audit` reports 0 vulnerabilities |
 | 3 | `app/server.js` (line 7) | `npm start` crashed: `Cannot find module './config.json'` | Read the error (server.js line 7), ran `ls` (only `config.example.json` exists), read `.gitignore` | Code required `config.json`, but `.gitignore` keeps it out of the repo, so a clean clone can never start | Replaced the `require` with an empty object `{}`; every setting already falls back to a default (see section 5) |
-| 4 | `app/server.js` (last lines) | `PORT=4000 npm start` printed port 4000 but the app only loaded on 3000 | Ran with `PORT=4000`, tried both addresses in the browser, compared the `PORT` line with `app.listen` | `app.listen(3000, ...)` was hard-coded, so the `PORT` variable was calculated but never used | Changed to `app.listen(PORT, ...)`; tested with and without `PORT=4000` |
+| 4 | `app/server.js` (last lines) | `PORT=4000 npm start` printed port 4000 but the app only loaded on 3000 | Ran with `PORT=4000`, tried both addresses in the browser, compared the `PORT` line with `app.listen` | `app.listen(3000, ...)` was hard-coded, so the `PORT` variable was calculated but never used | Changed to `app.listen(PORT, ...)`; tested with and without `PORT=4000` || 5 | `app/server.js` (`settings` object) | `GET /api/settings` returned the admin token (and app version) to anyone | Ran with `ADMIN_TOKEN=supersecret`, opened `/api/settings`, saw the token in the response | The token was put in the public settings object even though the web UI never uses it | Removed `adminToken` and `version` so settings only contains `maxTextLength`; retested |
+| 6 | `app/server.js` (admin reset route) | With no `ADMIN_TOKEN` set, a request with no header could wipe the board | Read the check `header !== ADMIN_TOKEN`: with both `undefined`, `undefined !== undefined` is false, so the request was allowed | The check didn't handle the case where no token is configured | Added `!ADMIN_TOKEN ||` so reset is refused when no token is set (fail closed); tested no header, wrong and correct token with curl |
 ## 3. What I didn't fix
 
 Anything you found but didn't fix, or suspected but couldn't pin down, and
@@ -46,6 +47,23 @@ why. Leave this blank if there's nothing.
 Which of the problems were security problems? For each one, what could
 someone actually do with it?
 an attacker could send a date sting that makes the old version of moment take a very long time to process. because the Node.js handles request one at a time, the whole app would freeze and it would cause a denial of service of attack.
+
+- Admin token exposed in `/api/settings` (fault 5)
+  - `/api/settings` is public, and it returned the admin token to
+    anyone who opened it, with no login needed.
+  - With that token, anyone could call `POST /api/admin/reset` and
+    delete every task on the board, as many times as they liked.
+  - It also exposed the app version, which tells an attacker exactly
+    which version's known bugs to look up.
+
+- Admin reset allowed when no token is configured (fault 6)
+  - If the server was started without `ADMIN_TOKEN`, the check
+    compared `undefined` with `undefined`, so a request with no
+    header at all was accepted.
+  - That means anyone who could reach the app could wipe the board
+    with one simple request, without needing any token.
+  - Fixed so the reset is refused whenever no token is set
+    ("fail closed").
 
 ## 5. One decision
 
