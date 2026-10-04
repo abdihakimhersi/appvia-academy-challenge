@@ -4,7 +4,7 @@ const moment = require('moment');
 const path = require('path');
 
 // Local settings for this machine. See config.example.json.
-const config = require('./config.json');
+const config = {};
 
 const PORT = process.env.PORT || config.port || 3000;
 const ADMIN_TOKEN = process.env.ADMIN_TOKEN || config.adminToken;

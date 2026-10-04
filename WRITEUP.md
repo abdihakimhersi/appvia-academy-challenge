@@ -34,7 +34,9 @@ changed.
 |---|--------------|---------|----------------|------------|--------|
 | 1 |  app         |EJSONPARS| npm install    |  comma     | delete |
 | 2 |  package     |npm install|npm audit     |old versioning raised min ^     |
-
+| 3 | app/server.js|npm start
+|   | 		  |no ./config.json| npm start| required config| replce required
+                                     ls, .gitignore| not needed in repo
 ## 3. What I didn't fix
 
 Anything you found but didn't fix, or suspected but couldn't pin down, and
@@ -50,7 +52,7 @@ an attacker could send a date sting that makes the old version of moment take a 
 
 Pick one fix where you considered more than one approach. What were the
 options, and why did you choose the one you did?
-
+the app crashed without config.json. I used {} and ingnore config.json entirely. it wont crash on start up. the was already a default in place, the fallback of port 3000 and 2000 was in place.
 ## 6. What happened on Friday
 
 - Timeline (times from the log, and what happened):
