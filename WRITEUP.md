@@ -32,11 +32,10 @@ changed.
 
 | # | Where (file) | Symptom | How I found it | Root cause | My fix |
 |---|--------------|---------|----------------|------------|--------|
-| 1 |  app         |EJSONPARS| npm install    |  comma     | delete |
-| 2 |  package     |npm install|npm audit     |old versioning raised min ^     |
-| 3 | app/server.js|npm start
-|   | 		  |no ./config.json| npm start| required config| replce required
-                                     ls, .gitignore| not needed in repo
+| 1 | `app/package.json` | `npm install` failed with `EJSONPARSE` | Ran `npm install`; the error pointed to line 14, column 3 of `package.json` | Trailing comma after the last dependency (`morgan`). JSON doesn't allow trailing commas, so npm couldn't read the file | Removed the trailing comma; `npm install` then worked |
+| 2 | `app/package.json` | `npm install` warned of 1 high severity vulnerability | Ran `npm audit` and `npm ls moment` | `moment` pinned to exactly `2.29.1`, which has known path traversal and ReDoS vulnerabilities (fixed in 2.29.2 / 2.29.4) | Changed to `^2.30.1` to raise the minimum safe version; npm installed 2.31.0 and `npm audit` reports 0 vulnerabilities |
+| 3 | `app/server.js` (line 7) | `npm start` crashed: `Cannot find module './config.json'` | Read the error (server.js line 7), ran `ls` (only `config.example.json` exists), read `.gitignore` | Code required `config.json`, but `.gitignore` keeps it out of the repo, so a clean clone can never start | Replaced the `require` with an empty object `{}`; every setting already falls back to a default (see section 5) |
+| 4 | `app/server.js` (last lines) | `PORT=4000 npm start` printed port 4000 but the app only loaded on 3000 | Ran with `PORT=4000`, tried both addresses in the browser, compared the `PORT` line with `app.listen` | `app.listen(3000, ...)` was hard-coded, so the `PORT` variable was calculated but never used | Changed to `app.listen(PORT, ...)`; tested with and without `PORT=4000` |
 ## 3. What I didn't fix
 
 Anything you found but didn't fix, or suspected but couldn't pin down, and

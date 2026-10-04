@@ -83,6 +83,6 @@ app.post('/api/admin/reset', (req, res) => {
   res.json({ ok: true });
 });
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
   console.log(`Taskboard running at http://localhost:${PORT}`);
 });
