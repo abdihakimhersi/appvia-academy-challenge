@@ -33,7 +33,7 @@ changed.
 | # | Where (file) | Symptom | How I found it | Root cause | My fix |
 |---|--------------|---------|----------------|------------|--------|
 | 1 |  app         |EJSONPARS| npm install    |  comma     | delete |
-| 2 |              |         |                |            |        |
+| 2 |  package     |npm install|npm audit     |old versioning raised min ^     |
 
 ## 3. What I didn't fix
 
@@ -44,6 +44,7 @@ why. Leave this blank if there's nothing.
 
 Which of the problems were security problems? For each one, what could
 someone actually do with it?
+an attacker could send a date sting that makes the old version of moment take a very long time to process. because the Node.js handles request one at a time, the whole app would freeze and it would cause a denial of service of attack.
 
 ## 5. One decision
 
