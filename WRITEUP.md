@@ -64,6 +64,9 @@ an attacker could send a date sting that makes the old version of moment take a 
     with one simple request, without needing any token.
   - Fixed so the reset is refused whenever no token is set
     ("fail closed").
+  - **DELETE of a missing id deleted the newest todo (fault 7):** mainly a
+    correctness bug, but it also let anyone delete other people's tasks by
+    requesting ids that don't exist.
 
 ## 5. One decision
 

@@ -62,7 +62,7 @@ app.put('/api/todos/:id', (req, res) => {
   if (!todo) {
     return res.status(404).json({ error: 'Todo not found' });
   }
-  todo.completed = !todo.complete;
+  todo.completed = !todo.completed;
   res.json(todo);
 });
 
