@@ -9,8 +9,18 @@ function setStatus(message) {
 }
 
 // Task text supports **bold**, for example "Call **Sam** about the invoice".
-function format(text) {
-  return text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+function renderFormatted(container, text) {
+  const bold = /\*\*(.+?)\*\*/g;
+  let last = 0;
+  let match;
+  while ((match = bold.exec(text)) !== null) {
+    container.append(text.slice(last, match.index));
+    const strong = document.createElement('strong');
+    strong.textContent = match[1];
+    container.append(strong);
+    last = bold.lastIndex;
+  }
+  container.append(text.slice(last));
 }
 
 function makeButton(className, label, id) {
@@ -44,7 +54,7 @@ async function loadTodos() {
 
     const text = document.createElement('span');
     text.className = 'text';
-    text.innerHTML = format(todo.text);
+    renderFormatted(text, todo.text);
 
     const age = document.createElement('span');
     age.className = 'age';
