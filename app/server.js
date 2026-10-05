@@ -41,8 +41,8 @@ app.get('/api/todos', (req, res) => {
 });
 
 app.post('/api/todos', (req, res) => {
-  if (!req.body.text) {
-    return res.status(400).json({ error: 'text is required' });
+  if (typeof req.body.text !== 'string' || req.body.text.trim() === '') {
+    return res.status(400).json({ error: 'text must be a non-empty 	string' });
   }
   // Long text is cut to the limit rather than rejected: the old mobile
   // app relies on this.
