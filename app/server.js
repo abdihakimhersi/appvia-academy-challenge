@@ -15,6 +15,7 @@ const settings = {
 };
 
 const app = express();
+app.disable('x-powered-by');
 
 app.use(morgan('combined'));
 app.use(express.json());
@@ -82,6 +83,13 @@ app.post('/api/admin/reset', (req, res) => {
   }
   todos = [];
   res.json({ ok: true });
+});
+
+// Return errors as JSON without stack traces or file paths.
+app.use((err, req, res, next) => {
+  console.error(err);
+  const status = err.status || 500;
+  res.status(status).json({ error: status === 500 ? 'Internal server error' : 'Bad request' });
 });
 
 app.listen(PORT, () => {
