@@ -68,6 +68,9 @@ app.put('/api/todos/:id', (req, res) => {
 
 app.delete('/api/todos/:id', (req, res) => {
   const index = todos.findIndex((t) => t.id === Number(req.params.id));
+  if (index === -1) {
+	return res.status(404).json({ error: 'Todo not found'});
+  }
   todos.splice(index, 1);
   res.status(204).end();
 });
